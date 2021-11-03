@@ -1,0 +1,15 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <app-course-list *ngIf="!coursesDialog" [coursesIn]="courses" [coursesEndIn]="coursesEnd" [flagCourses]="flagCourses"
+            [paginatorIn]="paginator" [formCourseIn]="formCourse" (coursesOut)="courses=$course"
+            (coursesEndOut)="coursesEnd=$course" (displayOut)="courseDialog=$course" (formCourseOut)="formCourse=$course"
+            (paginatorOut)="getCourses($course)">
+        </app-course-list>
+
+        <p-dialog [(visible)]="courseDialog" [style]="{width: '700px'}" header="Curso" [modal]="true"
+            styleClass="p-fluid" (onHide)="courseDialog=false">
+            
+        </p-dialog>
+
+    </div>
+</div>

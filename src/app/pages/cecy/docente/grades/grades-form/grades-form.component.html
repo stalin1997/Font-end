@@ -1,0 +1,54 @@
+<div class="p-fluid">
+    <form [formGroup]="formDetailRegistrationIn" (ngSubmit)="onSubmit($event)">
+                <div class="p-field">
+                    <label for="partial_grade1">
+                        <i class="p-error">*</i> Parcial 1:
+                        <i *ngIf="partialGrade1Field.valid" class="pi pi-check-circle icon-valid"></i>
+                        <i *ngIf="partialGrade1Field.invalid && (partialGrade1Field.touched || partialGrade1Field.dirty)"
+                            class="pi pi-times-circle icon-invalid"></i>
+                    </label>
+                    <input id="partial_grade1" formControlName="partial_grade1" pInputText type="number">
+                    <div *ngIf="partialGrade1Field.errors && partialGrade1Field.touched">
+                        <small *ngIf="partialGrade1Field.hasError('required')" id="partialGrade1-help-1" class="p-error">
+                            {{messageService.fieldRequired}}
+                        </small>
+                    </div>
+                </div>
+
+                <div class="p-field">
+                    <label for="partial_grade2">
+                        <i class="p-error">*</i> Parcial 2:
+                        <i *ngIf="partialGrade2Field.valid" class="pi pi-check-circle icon-valid"></i>
+                        <i *ngIf="partialGrade2Field.invalid && (partialGrade2Field.touched || partialGrade2Field.dirty)"
+                            class="pi pi-times-circle icon-invalid"></i>
+                    </label>
+                    <input id="partial_grade2" formControlName="partial_grade2" pInputText type="number">
+                    <div *ngIf="partialGrade2Field.errors && partialGrade2Field.touched">
+                        <small *ngIf="partialGrade2Field.hasError('required')" id="partialGrade2-help-1" class="p-error">
+                            {{messageService.fieldRequired}}
+                        </small>
+                    </div>
+                </div>
+
+                    <div class="p-formgrid p-grid">
+                        <div class="p-field p-col">
+                            <button pButton pRipple type="submit" id="btnSaveExit" 
+                                    label="Guardar y Salir"
+                                    class="p-button-success p-button-raised" 
+                                    icon="pi pi-save">
+                            </button>
+                        </div>
+                        <div *ngIf="!idField.value" class="p-field p-col">
+                            <button pButton pRipple type="button" id="btnSaveContinue" 
+                                    label="Guardar y Crear Nueva" 
+                                    class="p-button-raised"
+                                    icon="pi pi-arrow-right" 
+                                    (click)="onSubmit($event,true)">
+                            </button>
+                        </div>
+                    </div>
+
+     </form>
+</div>
+
+

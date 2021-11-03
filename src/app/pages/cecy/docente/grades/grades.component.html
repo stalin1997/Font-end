@@ -1,0 +1,35 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <app-grades-list
+        *ngIf="!detailRegistrationDialog" 
+        [detailRegistrationsIn]="detailRegistrations" 
+        [detailRegistrationsEndIn]="detailRegistrationsEnd"
+
+        [flagSkeletonDetailRegistrations]="flagSkeletonDetailRegistrations"
+        [paginatorIn]="paginator" 
+        [formDetailRegistrationIn]="formDetailRegistration"
+        (detailRegistrationsOut)="detailRegistrations=$event" 
+        (detailRegistrationsEndOut)="detailRegistrationsEnd = $event"
+        (displayOut)="detailRegistrationDialog=$event" 
+
+        (formDetailRegistrationOut)="formDetailRegistration=$event"
+        (paginatorOut)="getDetailRegistrations($event)">    
+        </app-grades-list>
+
+        <p-dialog [(visible)]="detailRegistrationDialog"
+        [style]="{width: '650px'}" 
+        header="Requerimiento" 
+        [modal]="true"
+        styleClass="p-fluid" 
+        (onHide)="DetailRegistrationDialog=false">
+            <app-grades-form
+                    [detailRegistrationsIn]="detailRegistrations"
+                    [formDetailRegistrationIn]="formDetailRegistration"
+                    (detailRegistrationsOut)="detailRegistrations=$event"
+                    (paginatorAdd)="paginator.total = paginator.total + $event"
+                    (displayOut)="detailRegistrationDialog=$event">
+            </app-grades-form>
+        </p-dialog>
+
+    </div>
+</div>

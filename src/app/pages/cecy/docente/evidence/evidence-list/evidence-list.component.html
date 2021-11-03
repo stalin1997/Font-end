@@ -1,0 +1,101 @@
+ <app-skeleton *ngIf="flagAttendances" [type]="'table'"></app-skeleton> 
+<div class="card" [hidden]="flagAttendances">
+    <p-toolbar styleClass="p-mb-4">
+        
+        <ng-template pTemplate="right">
+            <button pButton pRipple label="Actualizar" 
+                    icon="pi pi-refresh" 
+                    class="p-button-info"
+                    (click)="paginatorOut.emit(paginatorIn)"></button>
+        </ng-template>
+    </p-toolbar>
+    <p-paginator [rows]="paginatorIn.per_page" [totalRecords]="paginatorIn.total" 
+                (onPageChange)="paginateAttendance($event)"></p-paginator>
+    <p-table #dt 
+            [value]="attendancesIn" 
+            [columns]="colsAttendance" 
+            [rows]="paginatorIn.per_page" 
+            [paginator]="false"
+            [(selection)]="selectedAttendances" 
+            [rowHover]="true" 
+            dataKey="id" 
+            styleClass="p-datatable-customers"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+            [showCurrentPageReport]="true">
+            
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                <h5 class="p-m-0">Asistencia y Eviencia</h5>
+              
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                
+                <th>Cédula</th>
+                <th>Estudiante</th>
+             
+                
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                   
+                </th>
+                
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-columns="columns" let-rowData>
+            <tr>
+                
+
+                <td >
+                    {{rowData['detail_registration'].registration.participant.user.identification}}
+                </td> 
+                <td >
+                    {{rowData['detail_registration'].registration.participant.user.full_name}}
+                </td> 
+
+                <td *ngFor="let col of columns">
+                    {{rowData[col.field]?.name ? rowData[col.field]?.name : rowData[col.field]}}
+                </td>
+
+              
+               
+               
+
+                <td style="text-align:center">
+                    
+                    <button pButton pRipple type="button" id="btnAttach"
+                            pTooltip="Adjuntar Archivos" icon="pi pi-paperclip"
+                            class="p-button-rounded p-ml-2"
+                            (click)="selectAttendance(rowData);openViewFilesAttendance()"></button>
+                </td>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                En total hay {{attendancesIn ? attendancesIn.length : 0 }} Asistentes.
+            </div>
+        </ng-template>
+
+        
+    </p-table>
+</div>
+<p-dialog
+  [(visible)]="dialogViewFiles"
+  [style]="{ width: '75%' }"
+  header="Plantillas para Evidencia"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="dialogViewFiles = false"
+>
+  <app-view-files
+    (files)="upload($event, selectedAttendance.id)"
+    [filesIn]="files"
+    [title]="'Plantillas para Evidencia'"
+    (searchOut)="searchFiles($event)"
+    [paginatorIn]="paginatorFiles"
+    (paginatorOut)="getFiles($event)"
+  >
+  </app-view-files>
+</p-dialog>

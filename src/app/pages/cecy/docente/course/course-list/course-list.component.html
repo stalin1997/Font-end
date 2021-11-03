@@ -1,0 +1,64 @@
+<app-skeleton *ngIf="flagCourses" [type]="'table'"></app-skeleton>
+<div class="card" [hidden]="flagCourses">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            
+        </ng-template>
+        <ng-template pTemplate="right">
+            <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-info"
+                (click)="paginatorOut.emit(paginatorIn)"></button>
+        </ng-template>
+    </p-toolbar>
+    
+    <p-paginator [rows]="paginatorIn.per_page" [totalRecords]="paginatorIn.total"
+        (onPageChange)="paginateCourse($course)"></p-paginator>
+    <p-table #dt [value]="coursesIn" [columns]="colsCourse" [rows]="paginatorIn.per_page" [paginator]="false"
+        [(selection)]="selectedCourses" [rowHover]="true" dataKey="id" styleClass="p-datatable-customers"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                <h5 class="p-m-0">Cursos del Docente</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" (click)="searchCourses($course,search.value)"></i>
+                    <input pInputText #search type="text" (keyup)="searchCourses($course,$course.target.value)"
+                        placeholder="Buscar..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngSwitch]="col.field">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                    <!-- <input style="width:100px; margin-top: 10px;"  pInputText (input)="dt.filter($event.target.value, col.field, 'contains')" /> -->
+
+                </th>
+                <th style="text-align:center">
+                    
+                </th>
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-columns="columns" let-rowData>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
+                <td *ngFor="let col of columns">
+
+                    {{rowData[col.field]?.name ? rowData[col.field]?.name : rowData[col.field]}}
+
+                </td>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                En total hay {{coursesIn ? coursesIn.length : 0 }} cursos.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
